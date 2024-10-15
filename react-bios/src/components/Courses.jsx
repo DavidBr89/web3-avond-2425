@@ -1,5 +1,6 @@
 import React from "react";
 
+// Hier krijg je de props binnen die je dan kan gebruiken in deze component - Opgelet altijd een object
 const Courses = (props) => {
   // PROPS -> Object
   // { courses: [...], children: [] }
