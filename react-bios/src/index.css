@@ -1,0 +1,13 @@
+/* Tailwind imports */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* 
+body {
+  color: blue;
+}
+
+.title {
+  font-size: 28;
+  color: green;
+} */

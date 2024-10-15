@@ -1,7 +1,11 @@
 // Importeren van een dependency/third party package
 import React from "react";
+// Externe stylesheet
 import "./App.css";
 import Courses from "./components/Courses";
+import { Button } from "@mui/material";
+import MyButton from "./components/MyButton";
+import Counter from "./components/Counter";
 
 // Manier in Web 2
 // const subTitle = document.querySelector("#subTitle");
@@ -18,16 +22,53 @@ function App() {
     { id: "3", name: "Web 3" },
   ];
 
+  // Dit was de manier in Web 2 -> Dus niet meer te gebruiken in React
+  // const myBtn = document.querySelector("#myBtn");
+  // myBtn.addEventListener("click", () => {
+  //   console.log("Geklikt op de knop");
+  // });
+
+  const handleClick = (event) => {
+    console.log("Er is geklikt op de knop! ", event.target);
+  };
+
   // JSX
   return (
     // React Fragment
-    <>
-      <h1>Web 3</h1>
+    <div className="p-4">
+      <h1 className="title">Web 3</h1>
       {/* Commentaar */}
-      <h3 id="subTitle">{subTitle}</h3>
+      <h3
+        // Inline styles - JavaScript object -> Toegang tot alle CSS properties
+        style={{
+          color: "red",
+          backgroundColor: "yellow",
+          padding: 14,
+        }}
+        id="subTitle">
+        {subTitle}
+      </h3>
+
+      <Counter />
 
       {/* PROPS Meegeven aan de hand van een attribuut, je mag zelf de naam kiezen */}
       <Courses courses={objects} />
+
+      <MyButton label="Klik mij (APP)" onClick={handleClick}>
+        <>
+          <div>
+            <p>Klik mij (APP)</p>
+          </div>
+          <div>
+            <p> Test</p>
+          </div>
+        </>
+      </MyButton>
+
+      {/* <button>Test gmegemogemogeg</button>
+
+      <p>Material Button</p>
+      <Button variant="outlined">KLIK MIJ (MUI)</Button> */}
 
       <p>
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nostrum magnam
@@ -47,7 +88,7 @@ function App() {
         nesciunt rerum possimus, velit ducimus pariatur vitae? Inventore
         consectetur aliquam et.
       </p>
-    </>
+    </div>
   );
 }
 
