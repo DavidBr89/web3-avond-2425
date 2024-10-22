@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MyButton from "./MyButton";
+import CounterButtons from "./CounterButtons";
 
 const Counter = () => {
   //   let counter = 0;
@@ -10,44 +11,95 @@ const Counter = () => {
   //    STATE MOET JE ALTIJD IMMUTABLE AANPAKKEN -> Originele data wordt niet gewijzigd
   //          React moet kunnen afleiden of er iets veranderd is aan onze data -> Ik moet rerenderen
   const [counter, setCounter] = useState(0);
+  const [history, setHistory] = useState([]);
+
+  // const [total, setTotal] = useState(0);
+
+  // useEffect - Type 1
+  // Reageren op het mounten van deze component -> useEffect -> side effects
+  useEffect(() => {
+    console.log("useEffect Type 1");
+  });
+
+  // useEffect - Type 2
+  // Om code éénmalig uit te voeren bij de eerste mount van deze component
+  useEffect(() => {
+    console.log("useEffect Type 2");
+  }, []);
+
+  // useEffect - Type 2a
+  useEffect(() => {
+    console.log("useEffect Type 2a");
+  }, [history]);
+
+  // Hiervoor dient niet de useEffect hook -> enkel voor side effects
+  // useEffect(() => {
+  //   const totalOfHistory = history.reduce((acc, val) => acc + val, 0);
+  //   setTotal(totalOfHistory);
+  // }, [history]);
+
+  // useEffect - Type 3
+  useEffect(() => {
+    // Side effect - Browser API
+    // Afsluiten of interval gaan stoppen
+    const timerId = setInterval(() => {
+      setCounter(counter + 1);
+      // console.log(counter);
+    }, 1000);
+
+    // Deze functie is een soort van cleanup -> connecties te sluiten, timers te stoppen, listeners te stoppen
+    return () => {
+      clearInterval(timerId);
+    };
+  }, [counter]);
+
+  const totalOfHistory = history.reduce((acc, val) => acc + val, 0);
+
+  // useRef hook -> Referentie aanmaken meestal met een bepaald JSX element
+  // STAP 1 -> Referentie aan te maken -> useRef
+  const inputRef = useRef();
+  // de useRef geeft een object terug met een current property in =>  { current: undefined }
+
+  // TYPE  2
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   return (
     <div className="border-2 p-4 m-4 ">
       <h1>Counter component</h1>
       <p>{counter}</p>
-      <MyButton
-        label="-"
-        onClick={() => {
-          //   counter -= 1;
-          //   Asynchrone uitvoering
-          setCounter(counter - 1);
-          //   Je hebt hier nooit de huidige state maar wel de vorige
-          console.log(counter);
-          //   Refresh nu de UI
-        }}>
-        -
-      </MyButton>
-      <MyButton
-        label="+"
-        onClick={() => {
-          // Asynchrone uitvoering
 
-          const newCounter = counter + 1;
+      <CounterButtons updateCounter={setCounter} />
 
-          setCounter(newCounter);
-          console.log(newCounter);
-          //   Refresh nu de UI
-        }}>
-        +
-      </MyButton>
+      <div className="m-8">
+        <input
+          // STAP 2 -> Koppeling van de referentie met uw JSX element
+          ref={inputRef}
+          className="border rounded-lg px-4 py-2"
+          type="text"
+          placeholder="Naam vak"
+        />
+      </div>
 
-      {/* TODO: Zorg ervoor dat de counter waarde als op de voeg toe geklikt wordt, toegevoegd wordt aan de geschiedenis */}
       {/* Array van counter waardes */}
       <div className="border-2 p-4 m-4">
         <p>Geschiedenis:</p>
-        <MyButton>Voeg toe aan geschiedenis</MyButton>
+        <MyButton
+          onClick={() => {
+            // State moet altijd immutable aangepakt worden -> push methodes mogen niet gebruikt worden
+            setHistory([...history, counter]);
+          }}>
+          Voeg toe aan geschiedenis
+        </MyButton>
 
-        {/* TODO: Geschiedenis tonen aan de hand van ul met li */}
+        <ul>
+          {history.map((h, idx) => (
+            <li key={idx}>{h}</li>
+          ))}
+        </ul>
+
+        <p>De som van alle elementen uit de geschiedenis: {totalOfHistory}</p>
       </div>
     </div>
   );
