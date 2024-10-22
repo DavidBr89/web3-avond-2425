@@ -1,6 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import MyButton from "./MyButton";
 import CounterButtons from "./CounterButtons";
+
+import { useDarkMode } from "../contexts/DarkModeContext";
 
 const Counter = () => {
   //   let counter = 0;
@@ -12,6 +14,11 @@ const Counter = () => {
   //          React moet kunnen afleiden of er iets veranderd is aan onze data -> Ik moet rerenderen
   const [counter, setCounter] = useState(0);
   const [history, setHistory] = useState([]);
+
+  // const [counterHistory, setCounterHistory] = useState({
+  //   counter: 0,
+  //   history: [],
+  // });
 
   // const [total, setTotal] = useState(0);
 
@@ -65,8 +72,18 @@ const Counter = () => {
     inputRef.current.focus();
   }, []);
 
+  // useContext - Gebruiken van onze context
+  // const darkModeObj = useContext(DarkModeContext);
+  const darkModeObj = useDarkMode();
+
   return (
-    <div className="border-2 p-4 m-4 ">
+    <div
+      className={`border-2 p-4 m-4 ${
+        darkModeObj.isDarkMode
+          ? "bg-slate-900 text-white"
+          : "bg-white text-black"
+      }`}>
+      <p>Dark mode is: {darkModeObj.isDarkMode ? "AAN" : "UIT"}</p>
       <h1>Counter component</h1>
       <p>{counter}</p>
 

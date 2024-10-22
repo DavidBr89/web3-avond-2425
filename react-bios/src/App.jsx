@@ -6,6 +6,7 @@ import Courses from "./components/Courses";
 import { Button } from "@mui/material";
 import MyButton from "./components/MyButton";
 import Counter from "./components/Counter";
+import { useDarkMode } from "./contexts/DarkModeContext";
 
 // Manier in Web 2
 // const subTitle = document.querySelector("#subTitle");
@@ -31,6 +32,10 @@ function App() {
   const handleClick = (event) => {
     console.log("Er is geklikt op de knop! ", event.target);
   };
+
+  // useDarkMode
+
+  const { toggleDarkMode } = useDarkMode();
 
   // JSX
   return (
@@ -88,6 +93,8 @@ function App() {
         nesciunt rerum possimus, velit ducimus pariatur vitae? Inventore
         consectetur aliquam et.
       </p>
+
+      <MyButton onClick={toggleDarkMode}>Toggle darkmode</MyButton>
     </div>
   );
 }
