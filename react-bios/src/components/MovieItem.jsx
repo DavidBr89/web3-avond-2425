@@ -5,7 +5,7 @@ import duneImg from "../assets/dune_poster.jpg";
 
 const MovieItem = ({ movie }) => {
   return (
-    <div className="shadow-xl rounded-xl overflow-clip transform duration-500 hover:scale-105">
+    <div className="shadow-xl rounded-xl overflow-clip transform duration-500 hover:scale-105 cursor-pointer">
       <img
         src={new URL(`../assets/${movie.poster_path}`, import.meta.url)}
         alt=""

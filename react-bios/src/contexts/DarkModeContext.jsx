@@ -7,7 +7,7 @@ const DarkModeContextProvider = (props) => {
   // State bijhouden
   // Functies inzetten
 
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(props.defaultValue);
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
