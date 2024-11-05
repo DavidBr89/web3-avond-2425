@@ -9,6 +9,8 @@ import {
   MdOutlineHome,
 } from "react-icons/md";
 
+import { FaJedi } from "react-icons/fa";
+
 const Header = () => {
   return (
     <nav className="bg-emerald-800 p-4 flex justify-between items-center">
@@ -38,6 +40,15 @@ const Header = () => {
           }
           to="/favorites">
           <MdOutlineFavoriteBorder />
+        </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            isActive
+              ? "text-white underline underline-offset-8"
+              : "text-emerald-600"
+          }
+          to="/starwars">
+          <FaJedi />
         </NavLink>
       </div>
     </nav>

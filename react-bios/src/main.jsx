@@ -16,6 +16,8 @@ import DetailsPage from "./pages/DetailsPage.jsx";
 import { AppBar } from "@mui/material";
 import Courses from "./components/Courses.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
+import FavoritesContextProvider from "./contexts/FavoritesContext.jsx";
+import StarWarsPage from "./pages/StarWarsPage.jsx";
 
 // STAP 1: Aanmaken van onze BrowserRouter
 const browserRouter = createBrowserRouter([
@@ -56,6 +58,10 @@ const browserRouter = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "starwars",
+        element: <StarWarsPage />,
+      },
     ],
   },
 ]);
@@ -71,8 +77,10 @@ const browserRouter = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <DarkModeContextProvider defaultValue={true}>
-      {/* STAP 2: RouterProvider gebruiken en uw browserRouter object meegeven aan de router prop */}
-      <RouterProvider router={browserRouter} />
+      <FavoritesContextProvider>
+        {/* STAP 2: RouterProvider gebruiken en uw browserRouter object meegeven aan de router prop */}
+        <RouterProvider router={browserRouter} />
+      </FavoritesContextProvider>
     </DarkModeContextProvider>
   </StrictMode>
 );
