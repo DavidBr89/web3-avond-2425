@@ -75,24 +75,31 @@ const StarWarsPage = () => {
   //   OPTIE 2: gebruik makend van het Axios package
   useEffect(() => {
     setIsLoading(true);
+    let timerId;
     (async () => {
       try {
-        const response = await Axios.get("https://swapi.dev/api/films");
+        timerId = setInterval(async () => {
+          const response = await Axios.get("https://swapi.dev/api/films");
 
-        // // POST request
-        // const postResponse = await Axios.post("https://swapi.dev/api/films", {
-        //   fName: "David",
-        //   lName: "Breckx",
-        // });
-        // const postData = postResponse.data
+          // // POST request
+          // const postResponse = await Axios.post("https://swapi.dev/api/films", {
+          //   fName: "David",
+          //   lName: "Breckx",
+          // });
+          // const postData = postResponse.data
 
-        setMovies(response.data.results);
+          setMovies(response.data.results);
+        }, 5 * 60 * 1000);
       } catch (error) {
         setError(error);
       } finally {
         setIsLoading(false);
       }
     })();
+
+    return () => {
+      clearInterval(timerId);
+    };
   }, []);
 
   if (isLoading) {
