@@ -10,6 +10,7 @@ import {
 } from "react-icons/md";
 
 import { FaJedi } from "react-icons/fa";
+import StyledNavLink from "./StyledNavLink";
 
 const Header = () => {
   return (
@@ -22,34 +23,16 @@ const Header = () => {
         {/* Achter de schermen wordt dit vertaald naar een <a /> element maar zonder dat de pagina volledig ververst wordt. */}
         {/* <Link to="/">Home</Link> */}
         {/* TODO: Eventueel StyledNavLink components van maken -> herbruikbaar */}
-        <NavLink
-          className={({ isActive }) =>
-            isActive
-              ? "text-white underline underline-offset-8"
-              : "text-emerald-600"
-          }
-          to="/">
+        <StyledNavLink navTo="/">
           <MdOutlineHome />
-        </NavLink>
+        </StyledNavLink>
         {/* De NavLink zorgt ervoor dat je een functie in de className prop binnen krijgt -> Styling kunt aanpassen a.h.v. isActive boolean */}
-        <NavLink
-          className={({ isActive }) =>
-            isActive
-              ? "text-white underline underline-offset-8"
-              : "text-emerald-600"
-          }
-          to="/favorites">
+        <StyledNavLink navTo="/favorites">
           <MdOutlineFavoriteBorder />
-        </NavLink>
-        <NavLink
-          className={({ isActive }) =>
-            isActive
-              ? "text-white underline underline-offset-8"
-              : "text-emerald-600"
-          }
-          to="/starwars">
+        </StyledNavLink>
+        <StyledNavLink navTo="/starwars">
           <FaJedi />
-        </NavLink>
+        </StyledNavLink>
       </div>
     </nav>
   );
