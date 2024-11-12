@@ -7,11 +7,16 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ParkingsListPage from "./pages/ParkingsListPage.jsx";
+import ParkingsMapPage from "./pages/ParkingsMapPage.jsx";
 
 const browserRouter = createBrowserRouter([
   {
     path: "/",
     element: <ParkingsListPage />,
+  },
+  {
+    path: "/map",
+    element: <ParkingsMapPage />,
   },
 ]);
 
