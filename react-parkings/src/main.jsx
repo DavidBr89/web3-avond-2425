@@ -8,6 +8,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ParkingsListPage from "./pages/ParkingsListPage.jsx";
 import ParkingsMapPage from "./pages/ParkingsMapPage.jsx";
+import AddProfilePage from "./pages/AddProfilePage.jsx";
+import AddProfileWithFormikPage from "./pages/AddProfileWithFormikPage.jsx";
 
 const browserRouter = createBrowserRouter([
   {
@@ -17,6 +19,15 @@ const browserRouter = createBrowserRouter([
   {
     path: "/map",
     element: <ParkingsMapPage />,
+  },
+  // Manuele manier om te werken met formulieren
+  // {
+  //   path: "/add",
+  //   element: <AddProfilePage />,
+  // },
+  {
+    path: "/add",
+    element: <AddProfileWithFormikPage />,
   },
 ]);
 
