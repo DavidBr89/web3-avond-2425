@@ -13,17 +13,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum OrderStatus {
+  NEW
+  PROCESSING
+  DELIVERED
+}
+
 // Een tabel dat je wilt aanmaken in uw databank -> model
 
 // TABLE User
 model User {
-  id        Int      @id @default(autoincrement())
-  firstName String   @db.VarChar(50)
-  lastName  String   @db.VarChar(50)
-  email     String   @unique
+  id        Int    @id @default(autoincrement())
+  firstName String @db.VarChar(50)
+  lastName  String @db.VarChar(50)
+  email     String @unique
   password  String
   // Nullable field ?
   age       Int?
+
+  // FK - DatabankNiveau
+  profileId Int?     @unique
+  // Dit wordt niet in uw databank
+  profile   Profile? @relation(fields: [profileId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -35,7 +46,54 @@ model User {
 
 // 1-1 relatie
 
+model Profile {
+  id       Int       @id @default(autoincrement())
+  bio      String
+  birthday DateTime?
+  userId   Int?
+  user     User?
+}
+
 // 1-N relatie
+
+model Product {
+  id          Int         @id @default(autoincrement())
+  name        String
+  description String?
+  price       Int
+  categoryId  Int
+  category    Category    @relation(fields: [categoryId], references: [id])
+  // Impliciet N-M
+  // orders Orders[]
+  orderLines  OrderLine[]
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  products Product[]
+}
 
 // N-M relatie
 // Impliciet / Expliciet
+
+model Order {
+  id          Int         @id @default(autoincrement())
+  totalPrice  Int
+  status      OrderStatus
+  isProcessed Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  // Impliciet N-M
+  // products Product[]
+  orderLines  OrderLine[]
+}
+
+model OrderLine {
+  id        Int     @id @default(autoincrement())
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+  orderId   Int
+  order     Order   @relation(fields: [orderId], references: [id])
+  qty       Int
+}
