@@ -4,6 +4,11 @@ const express = require("express");
 const router = express.Router();
 
 const ProductController = require("../controllers/product_controller");
+const ProductsMiddlewares = require("../middlewares/products_middlewares");
+
+// ROUTER LEVEL MIDDLEWARE -> Deze code wordt enkel dan uitgevoerd bij het /products pad en zijn subpaden
+
+router.use(ProductsMiddlewares.routerMiddleware);
 
 // TODO: Alle functies in de controller gaan steken
 
@@ -15,35 +20,11 @@ const ProductController = require("../controllers/product_controller");
 router.get("/", ProductController.getAllProducts);
 
 // GET "/products/test" => Testpagina tonen
-router.get("/test", (req, res) => {
-  // Query parameters te gaan gebruiken
-  // /products/test?lang=nl&color=blue
-  const { lang, color } = req.query;
-
-  switch (lang) {
-    case "nl":
-      res.send("Dit is de testpagina.");
-      break;
-    case "en":
-      res.send("This is the testpage.");
-      break;
-    default:
-      res.send("Dit is de testpagina. FALLBACK.");
-      break;
-  }
-
-  //   if (lang) {
-  //     if (lang === "nl") {
-  //       return res.send("Dit is de testpagina.");
-  //     } else if (lang === "en") {
-  //       return res.send("This is the testpage.");
-  //     }
-  //   }
-
-  //   res.send("Dit is de testpagina. FALLBACK.");
-
-  //   res.send("Testpagina");
-});
+router.get(
+  "/test",
+  ProductsMiddlewares.pathMiddleware,
+  ProductController.testFn
+);
 
 // TEST STATUSCODES
 

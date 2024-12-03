@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Een tabel dat je wilt aanmaken in uw databank -> model
+
+// TABLE User
+model User {
+  id        Int      @id @default(autoincrement())
+  firstName String   @db.VarChar(50)
+  lastName  String   @db.VarChar(50)
+  email     String   @unique
+  password  String
+  // Nullable field ?
+  age       Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Samengestelde unieke index
+  @@unique([firstName, lastName])
+  // Andere naam voor onze tabel i.p.v. User
+  @@map("users")
+}
+
+// 1-1 relatie
+
+// 1-N relatie
+
+// N-M relatie
+// Impliciet / Expliciet
