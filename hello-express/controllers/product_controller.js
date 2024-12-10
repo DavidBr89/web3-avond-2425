@@ -1,10 +1,35 @@
 // Controller voor de CRUD methodes
 const ProductController = {
-  createProduct: async (req, res) => {},
-  getAllProducts: async (req, res) => {},
-  getProductById: async (req, res) => {},
-  updateProduct: async (req, res) => {},
-  deleteProduct: async (req, res) => {},
+  getAllProducts: async (req, res) => {
+    try {
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  },
+  getProductById: async (req, res) => {
+    try {
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  },
+  createProduct: async (req, res) => {
+    try {
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  },
+  updateProduct: async (req, res) => {
+    try {
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  },
+  deleteProduct: async (req, res) => {
+    try {
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  },
   // testFn: (req, res) => {
   //   const { lang, color } = req.query;
 

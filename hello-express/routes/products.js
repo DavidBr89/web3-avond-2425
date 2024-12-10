@@ -10,8 +10,6 @@ const ProductsMiddlewares = require("../middlewares/products_middlewares");
 
 router.use(ProductsMiddlewares.routerMiddleware);
 
-// TODO: Alle functies in de controller gaan steken
-
 // ROUTES AFHANDELEN
 // "/products" -> Alle producten opvragen (GET), product opvragen op id (GET), product aanmaken (POST), product updaten (PUT/PATCH), product verwijderen (DELETE)
 
