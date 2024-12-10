@@ -4,30 +4,81 @@ const prisma = require("../config/prisma");
 const ProductController = {
   getAllProducts: async (req, res) => {
     try {
+      const products = await prisma.product.findMany({
+        include: {
+          category: true,
+        },
+      });
+
+      res.json(products);
     } catch (error) {
       res.status(500).send(error);
     }
   },
   getProductById: async (req, res) => {
     try {
+      const { id } = req.params;
+
+      // TODO: Validatie
+
+      const product = await prisma.product.findUnique({
+        where: {
+          // id: Number.parseInt(id)
+          id: +id,
+        },
+      });
+
+      res.json(product);
     } catch (error) {
       res.status(500).send(error);
     }
   },
   createProduct: async (req, res) => {
     try {
+      const newData = req.body;
+      // TODO: Validatie
+
+      const newProduct = await prisma.product.create({
+        data: newData,
+      });
+
+      res.status(201).json(newProduct);
     } catch (error) {
       res.status(500).send(error);
     }
   },
   updateProduct: async (req, res) => {
     try {
+      const { id } = req.params;
+      const newData = req.body;
+
+      // TODO: Validatie
+
+      const updatedProduct = await prisma.product.update({
+        where: {
+          id: +id,
+        },
+        data: newData,
+      });
+
+      res.json(updatedProduct);
     } catch (error) {
       res.status(500).send(error);
     }
   },
   deleteProduct: async (req, res) => {
     try {
+      const { id } = req.params;
+
+      // TODO: Validatie
+
+      await prisma.product.delete({
+        where: {
+          id: +id,
+        },
+      });
+
+      res.sendStatus(204);
     } catch (error) {
       res.status(500).send(error);
     }

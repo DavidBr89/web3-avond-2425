@@ -1,4 +1,6 @@
 const prisma = require("../config/prisma");
+const { validationResult } = require("express-validator");
+const bcrypt = require("bcrypt");
 
 // CRUD - Create Read Update Delete (Destroy)
 const UserController = {
@@ -46,7 +48,12 @@ const UserController = {
   getById: async (req, res) => {
     try {
       const { id } = req.params;
-      // TODO: Validatie op deze params
+
+      const validationErrors = validationResult(req);
+
+      if (!validationErrors.isEmpty()) {
+        return res.status(400).json({ errors: validationErrors.array() });
+      }
 
       const user = await prisma.user.findUnique({
         where: {
@@ -72,7 +79,12 @@ const UserController = {
   getByEmail: async (req, res) => {
     try {
       const { email } = req.params;
-      // TODO:  Validatie op deze params
+
+      const validationErrors = validationResult(req);
+
+      if (!validationErrors.isEmpty()) {
+        return res.status(400).json({ errors: validationErrors.array() });
+      }
 
       const user = await prisma.user.findUnique({
         where: {
@@ -96,17 +108,29 @@ const UserController = {
       res.status(500).send(error);
     }
   },
+  // Register
   create: async (req, res) => {
     try {
       const newUser = req.body;
-      // TODO: Validatie toevoegen
+
+      const validationErrors = validationResult(req);
+
+      if (!validationErrors.isEmpty()) {
+        return res.status(400).json({ errors: validationErrors.array() });
+      }
+
+      // Wachtwoord hashen
+      const hashedPassword = await bcrypt.hash(newUser.password, 12);
 
       await prisma.user.create({
-        data: newUser,
+        data: {
+          ...newUser,
+          password: hashedPassword,
+        },
       });
 
       // 201 - Created
-      res.sendStatus(201);
+      res.status(201).json({ ...newUser, password: undefined });
     } catch (error) {
       res.status(500).send(error);
     }
@@ -115,7 +139,13 @@ const UserController = {
     try {
       const { id } = req.params;
       const updatedUser = req.body;
-      // TODO: Validatie toevoegen
+
+      const validationErrors = validationResult(req);
+
+      if (!validationErrors.isEmpty()) {
+        return res.status(400).json({ errors: validationErrors.array() });
+      }
+
       const user = await prisma.user.update({
         data: updatedUser,
         where: {
@@ -131,7 +161,12 @@ const UserController = {
   delete: async (req, res) => {
     try {
       const { id } = req.params;
-      // TODO: Validatie toevoegen
+
+      const validationErrors = validationResult(req);
+
+      if (!validationErrors.isEmpty()) {
+        return res.status(400).json({ errors: validationErrors.array() });
+      }
 
       await prisma.user.delete({
         where: {
@@ -140,6 +175,38 @@ const UserController = {
       });
       //   204 - No Content
       res.sendStatus(204);
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  },
+  login: async (req, res) => {
+    const { email, password } = req.body;
+
+    const validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+      return res.status(400).json({ errors: validationErrors.array() });
+    }
+
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          email: email,
+        },
+      });
+
+      if (!user) {
+        return res.sendStatus(401);
+      }
+
+      // Wachtwoorden vergelijken
+      const isPasswordMatch = await bcrypt.compare(password, user.password);
+
+      if (isPasswordMatch) {
+        res.json({ ...user, password: undefined });
+      } else {
+        res.sendStatus(401);
+      }
     } catch (error) {
       res.status(500).send(error);
     }

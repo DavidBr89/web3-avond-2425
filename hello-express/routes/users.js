@@ -2,6 +2,9 @@ const express = require("express");
 const UserController = require("../controllers/user_controller");
 const router = express.Router();
 
+const { body, param } = require("express-validator");
+const UsersValidators = require("../validators/users_validator");
+
 /* GET users listing. */
 // router.get("/", function (req, res, next) {
 //   res.send("respond with a resource");
@@ -11,14 +14,22 @@ const router = express.Router();
 
 router.get("/", UserController.getAll);
 
-router.get("/:id", UserController.getById);
+router.get("/:id", UsersValidators.idValidator, UserController.getById);
 
-router.get("/email/:email", UserController.getByEmail);
+router.get(
+  "/email/:email",
+  UsersValidators.emailValidator,
+  UserController.getByEmail
+);
 
-router.post("/", UserController.create);
+// router.post("/", UsersValidators.createUserValidator, UserController.create);
 
-router.patch("/:id", UserController.update);
+router.patch(
+  "/:id",
+  UsersValidators.updateUserValidator,
+  UserController.update
+);
 
-router.delete("/:id", UserController.delete);
+router.delete("/:id", UsersValidators.idValidator, UserController.delete);
 
 module.exports = router;
