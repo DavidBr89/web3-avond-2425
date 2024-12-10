@@ -1,3 +1,5 @@
+const prisma = require("../config/prisma");
+
 // Controller voor de CRUD methodes
 const ProductController = {
   getAllProducts: async (req, res) => {

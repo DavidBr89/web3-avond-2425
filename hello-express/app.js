@@ -15,6 +15,7 @@ const logger = require("morgan");
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const productsRouter = require("./routes/products");
+const profilesRouter = require("./routes/profiles");
 const appMidlleware = require("./middlewares/app_middleware");
 
 // APP GEÏNITIALISEERD
@@ -41,6 +42,7 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 // Koppeling tussen het "/products" pad en onze productsRouter
 app.use("/products", productsRouter);
+app.use("/profiles", profilesRouter);
 
 // EXPORT
 module.exports = app;
