@@ -19,79 +19,87 @@ router.use(ProductsMiddlewares.routerMiddleware);
 // (req, res) => {} => Request handler (callback) -> code wordt uitgevoerd bij het afhandelen van deze request
 router.get("/", ProductController.getAllProducts);
 
-// GET "/products/test" => Testpagina tonen
-router.get(
-  "/test",
-  ProductsMiddlewares.pathMiddleware,
-  ProductController.testFn
-);
+router.get("/:id", ProductController.getProductById);
 
-// TEST STATUSCODES
+router.post("/", ProductController.createProduct);
 
-router.get("/error", (req, res) => {
-  // Internal server error
-  res.sendStatus(500);
-});
+router.put("/:id", ProductController.updateProduct);
 
-router.get("/login", (req, res) => {
-  // BAD REQUEST (400) - Incorrect formaat van data, meestal gebruikt bij validatie
-  //   res.sendStatus(400);
-  // UNAUTHORIZED (401) - Gebruiker is niet ingelogd
-  //   res.sendStatus(401);
-  // FORBIDDEN (403) - Rollen te maken -> Gebruiker is ingelogd maar heeft bijvoorbeeld geen admin rechten
-  res.sendStatus(403);
-});
+router.delete("/:id", ProductController.deleteProduct);
 
-// OPGELET -> VOLGORDE IS BIJLANGRIJK
-// GET "/products/12" => Eén product opvragen met deze specifieke id (dynamische parameter)
-router.get("/:id", (req, res) => {
-  // De id komt uit uw params object vanuit het request object
-  const { id } = req.params;
+// // GET "/products/test" => Testpagina tonen
+// router.get(
+//   "/test",
+//   ProductsMiddlewares.pathMiddleware,
+//   ProductController.testFn
+// );
 
-  //   TODO: Product opvragen uit de databank met de gegeven id
-  const product = {
-    id: Number.parseInt(id),
-    name: "Web 3 boek",
-  };
+// // TEST STATUSCODES
 
-  //   res.send(`Product met id: ${id}`);
-  res.json(product);
-});
+// router.get("/error", (req, res) => {
+//   // Internal server error
+//   res.sendStatus(500);
+// });
 
-// POST "/products/" => Een nieuw product kan aanmaken
-// Vanuit de body property -> haal je de data vanuit het request object van de client
-router.post("/", (req, res) => {
-  const newProduct = req.body;
+// router.get("/login", (req, res) => {
+//   // BAD REQUEST (400) - Incorrect formaat van data, meestal gebruikt bij validatie
+//   //   res.sendStatus(400);
+//   // UNAUTHORIZED (401) - Gebruiker is niet ingelogd
+//   //   res.sendStatus(401);
+//   // FORBIDDEN (403) - Rollen te maken -> Gebruiker is ingelogd maar heeft bijvoorbeeld geen admin rechten
+//   res.sendStatus(403);
+// });
 
-  // TODO: Product aanmaken in de databank
-  // Statuscode voor created - 201 -> teruggeven via status() methode
-  res.status(201).json({ id: 14, ...newProduct });
-  //   res.send("Product is aangemaakt!");
-});
+// // OPGELET -> VOLGORDE IS BIJLANGRIJK
+// // GET "/products/12" => Eén product opvragen met deze specifieke id (dynamische parameter)
+// router.get("/:id", (req, res) => {
+//   // De id komt uit uw params object vanuit het request object
+//   const { id } = req.params;
 
-// PUT "/products/12" => Een product te updaten
-router.put("/:id", (req, res) => {
-  res.send("Product is geüpdated");
-});
+//   //   TODO: Product opvragen uit de databank met de gegeven id
+//   const product = {
+//     id: Number.parseInt(id),
+//     name: "Web 3 boek",
+//   };
 
-// PATCH "/products/12" => Een product updaten maar meestal maar een gedeelte
-router.patch("/:id", (req, res) => {
-  res.send("Product is gepatched.");
-});
+//   //   res.send(`Product met id: ${id}`);
+//   res.json(product);
+// });
 
-// DELETE "/products/12" => Een product met id verwijderen
-router.delete("/:id", (req, res) => {
-  const { id } = req.params;
-  //   TODO: Het product met de id verwijderen uit uw databank
-  //   De status methode -> geen eindtoestand
-  //   De sendStatus() methode -> wel eindtoestand
-  res.sendStatus(204);
-});
+// // POST "/products/" => Een nieuw product kan aanmaken
+// // Vanuit de body property -> haal je de data vanuit het request object van de client
+// router.post("/", (req, res) => {
+//   const newProduct = req.body;
 
-// Fallback route
-router.all("/*fallback", (req, res) => {
-  res.sendStatus(404);
-});
+//   // TODO: Product aanmaken in de databank
+//   // Statuscode voor created - 201 -> teruggeven via status() methode
+//   res.status(201).json({ id: 14, ...newProduct });
+//   //   res.send("Product is aangemaakt!");
+// });
+
+// // PUT "/products/12" => Een product te updaten
+// router.put("/:id", (req, res) => {
+//   res.send("Product is geüpdated");
+// });
+
+// // PATCH "/products/12" => Een product updaten maar meestal maar een gedeelte
+// router.patch("/:id", (req, res) => {
+//   res.send("Product is gepatched.");
+// });
+
+// // DELETE "/products/12" => Een product met id verwijderen
+// router.delete("/:id", (req, res) => {
+//   const { id } = req.params;
+//   //   TODO: Het product met de id verwijderen uit uw databank
+//   //   De status methode -> geen eindtoestand
+//   //   De sendStatus() methode -> wel eindtoestand
+//   res.sendStatus(204);
+// });
+
+// // Fallback route
+// router.all("/*fallback", (req, res) => {
+//   res.sendStatus(404);
+// });
 
 // EXPORT
 module.exports = router;
