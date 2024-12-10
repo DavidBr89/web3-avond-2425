@@ -17,6 +17,19 @@ const AuthContextProvider = (props) => {
   const login = async (email, password, navigate) => {
     setIsLoading(true);
     try {
+      const response = await Axios.post(
+        `${BASE_URL}/login`,
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
+      setUser(response.data);
+
+      if (navigate) {
+        navigate("/profile", { replace: true });
+      }
     } catch (error) {
       setUser(null);
 
@@ -29,6 +42,17 @@ const AuthContextProvider = (props) => {
   const register = async (firstName, lastName, email, password, navigate) => {
     setIsLoading(true);
     try {
+      const response = await Axios.post(
+        `${BASE_URL}/register`,
+        {
+          firstName,
+          lastName,
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
+      setUser(response.data);
     } catch (error) {
       setUser(null);
       console.log(error);
@@ -40,6 +64,11 @@ const AuthContextProvider = (props) => {
   const verify = async () => {
     setIsLoading(true);
     try {
+      const response = await Axios.get(`${BASE_URL}/verify`, {
+        withCredentials: true,
+      });
+
+      setUser(response.data);
     } catch (error) {
       setUser(null);
     } finally {

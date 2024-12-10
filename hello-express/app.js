@@ -6,6 +6,8 @@ require("dotenv").config();
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const helmet = require("helmet");
+const cors = require("cors");
 // import express from "express" -> Nieuwere manier zoals in React ES modules
 
 // Core module
@@ -25,6 +27,18 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// HELMET
+app.use(helmet());
+
+// CORS
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
+
 // VERWIJDEREN WANT GEEN WEBSITE VIA EXPRESS
 // app.use(express.static(path.join(__dirname, "public")));
 

@@ -18,7 +18,11 @@ const browserRouter = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <ProductsPage />,
+        element: (
+          <AuthProtectedRoute>
+            <ProductsPage />
+          </AuthProtectedRoute>
+        ),
       },
       {
         path: "/profile",
